@@ -1,6 +1,7 @@
 ## Help me respond
 
-This is a simple response helper which should make you life a bit easier. It supports localization and friendly messages for users.
+This is a simple response helper which should make you life a bit easier. It supports localization and friendly messages for users. 
+Help-me-respond preconfigures HTTP responses for you by setting up the status code, processing the message and setting headers. You only need to call one of the API functions and pass the message in a form of a string or an object to it.
 
 ## Prerequisites for usage
 Your project is a nodejs server based on Express or something similar. Help-me-respond uses the res object from Express, which represents the HTTP response that an Express app sends when it gets an HTTP request.
