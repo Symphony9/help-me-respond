@@ -13,7 +13,14 @@
 	  "symphonyno9",
 	  "express response"
   ],
-  "author": "piggydoughnut <drmikhailova@gmail.com>",
+  "author": "Daria Mikhailova <drmikhailova@gmail.com>",
+  "repository" :{
+	  "type" : "git",
+	  "url" : "https://github.com/Symphony9/help-me-respond"
+  },
+  "bugs": {
+      "url": "https://github.com/Symphony9/help-me-respond/issues"
+    },
   "license": "ISC",
   "dependencies": {
     "config": "^1.25.1",
