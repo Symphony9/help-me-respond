@@ -7,7 +7,7 @@ Your project is a nodejs server based on Express or something similar. Help-me-r
 
 ## Setup
 
-* Install the module
+* Install with **npm i help-me-respond --save**
 * Setup config
 
 Create a config folder and put **default.json** in it. (more cool config setup at https://github.com/lorenwest/node-config).
@@ -22,7 +22,7 @@ You will need to add the following to your **default.json** file. File naming is
 
 * Create the specified above locales folder and locales file and add some messages there.
 
-    ```
+	```
     {
     	"NO_SHARING_WITH_YOURSELF": {
     		"en": "You cannot share the link with yourslef"
@@ -31,43 +31,48 @@ You will need to add the following to your **default.json** file. File naming is
     		"en": "You are not the owner"
     	}
     }
-    ```
+	```
 
 * Setup friendly messages.
 
 Some messages returned from the server are too technical for the user. So we would like to differentiate between those messages and user friendly messages. Simply add the following to your **default.json** configuration file. Now you can add message names in the friendlyMessages array.
 
-	```
     {
     	"friendlyMessages": [
     	]
     }
 
-    ```
 
 Once the message name is in the above array, the response will have a key **friendlyMessage** which makes it easy for front-end to differentiate between messages.
 
 ## API
 
 **res** - Express res object
+
 **msg** - string message, Error object, any other object
+
 **headers** - array with http headers. If none provided the only header set by the library will be *Content-type*: *application/json*
+
 
 #### http400(res, msg, headers)
 returns HTTP response with 400 error code
 If no message is specified will return message - BAD REQUEST
 
+
 #### http404(res, msg, headers)
 returns HTTP response with 404 error code
 If no message is specified will return message - NOT FOUND
+
 
 #### http403(res, msg, headers)
 returns HTTP response with 403 error code
 If no message is specified will return message - FORBIDDEN
 
+
 #### http401(res, msg, headers)
 returns HTTP response with 403 error code
 If no message is specified will return message - UNAUTHENTICATED
+
 
 #### http502(res, response, headers)
 response - an Express response object
@@ -75,14 +80,18 @@ returns HTTP response with 502 error code
 
 This can be used when you are quering third party API. E.g. You will receive an error reponse for you request. You can call this function with the original response object. This way you will differentiate between you own server errors and third party API problems
 
+
 #### httpSuccess(res, msg, headers)
 returns HTTP response with 200 success code
 
-### http201(res, msg, headers)
+
+#### http201(res, msg, headers)
 returns HTTP response with 201 success code
+
 
 #### rCode(code, res, msg, headers)
 general function to return any HTTP responce you want
+
 
 ## Response examples
 
