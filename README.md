@@ -7,7 +7,12 @@ Your project is a nodejs server based on Express or something similar. Help-me-r
 
 ## Setup
 
-* Install with **npm i help-me-respond --save**
+* Install with
+
+```
+npm i help-me-respond --save
+```
+
 * Setup config
 
 Create a config folder and put **default.json** in it. (more cool config setup at https://github.com/lorenwest/node-config).
@@ -22,16 +27,16 @@ You will need to add the following to your **default.json** file. File naming is
 
 * Create the specified above locales folder and locales file and add some messages there.
 
-	```
-    {
-    	"NO_SHARING_WITH_YOURSELF": {
-    		"en": "You cannot share the link with yourslef"
-    	},
-    	"NOT_OWNER": {
-    		"en": "You are not the owner"
-    	}
-    }
-	```
+```
+{
+	"NO_SHARING_WITH_YOURSELF": {
+		"en": "You cannot share the link with yourslef"
+	},
+	"NOT_OWNER": {
+		"en": "You are not the owner"
+	}
+}
+```
 
 * Setup friendly messages.
 
@@ -52,6 +57,7 @@ Once the message name is in the above array, the response will have a key **frie
 **msg** - string message, Error object, any other object
 
 **headers** - array with http headers. If none provided the only header set by the library will be *Content-type*: *application/json*
+
 
 
 #### http400(res, msg, headers)
@@ -90,7 +96,7 @@ returns HTTP response with 201 success code
 
 
 #### rCode(code, res, msg, headers)
-general function to return any HTTP responce you want
+general function to return any HTTP code you want
 
 
 ## Response examples
