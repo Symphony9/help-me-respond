@@ -1,0 +1,22 @@
+{
+  "name": "help-me-respond",
+  "version": "1.0.5",
+  "description": "Simple nodejs response helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+	  "node response",
+	  "nodejs response",
+	  "response helper",
+	  "symphonyno9",
+	  "express response"
+  ],
+  "author": "piggydoughnut <drmikhailova@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^1.25.1",
+    "i18n-nodejs": "^2.0.0"
+  }
+}
