@@ -1,29 +1,29 @@
 {
-	"name": "help-me-respond",
-	"version": "1.0.7",
-	"description": "Simple nodejs response helper",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [
-	  "node response",
-	  "nodejs response",
-	  "response helper",
-	  "symphonyno9",
-	  "express response"
+  "name": "help-me-respond",
+  "version": "1.1.0",
+  "description": "Simple nodejs response helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node response",
+    "nodejs response",
+    "response helper",
+    "symphonyno9",
+    "express response"
   ],
-	"author": "Daria Mikhailova <drmikhailova@gmail.com>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Symphony9/help-me-respond"
-	},
-	"bugs": {
-		"url": "https://github.com/Symphony9/help-me-respond/issues"
-	},
-	"license": "ISC",
-	"dependencies": {
-		"config": "^1.25.1",
-		"i18n-nodejs": "^2.0.0"
-	}
+  "author": "Daria Mikhailova <drmikhailova@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Symphony9/help-me-respond"
+  },
+  "bugs": {
+    "url": "https://github.com/Symphony9/help-me-respond/issues"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "config": "^1.25.1",
+    "i18n-nodejs": "^2.0.0"
+  }
 }
