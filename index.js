@@ -40,8 +40,10 @@ function http502(res, resp, body) {
 	}
 	return rCode(
 		502,
-		res,
-		{ statusCode: code, message: body},
+		res, {
+			statusCode: code,
+			message: body
+		},
 		headers
 	);
 }
@@ -57,12 +59,19 @@ function http201(res, msg, headers) {
 function rCode(code, res, msg, headers) {
 	var args = null
 
+	// if there is no code in the message, its probably error
+	code = code ? code : 400;
+	// empty message is ok
+	msg = msg ? msg : '';
+
 	res = res.status(code);
 	if (headers && headers !== undefined) {
 		headers['content-type'] = 'application/json';
 		res = res.header(headers);
 	} else {
-		var headers = {'content-type': 'application/json'};
+		var headers = {
+			'content-type': 'application/json'
+		};
 		res = res.header(headers);
 	}
 
@@ -70,48 +79,57 @@ function rCode(code, res, msg, headers) {
 		msg = msg.message.toString()
 	}
 
-	if(code == 502 && msg.message && msg.statusCode && msg.message instanceof Error) {
+	if (code == 502 && msg.message && msg.statusCode && msg.message instanceof Error) {
 		msg.message = msg.message.message.toString()
 	}
 
-	if(tools.isJsonString(msg)) {
+	if (tools.isJsonString(msg)) {
 		var jsonObj = JSON.parse(msg)
-		if(jsonObj.msg) {
+		if (jsonObj.msg) {
 			msg = jsonObj.msg
 		}
-		if(jsonObj.args) {
+		if (jsonObj.args) {
 			args = jsonObj.args
 		}
 	}
 
 	// friendly messages for users
-	if(checkFriendly(msg)) {
-		msg = {friendlyMessage : i18n.__(msg, args)}
-	} else if(msg && msg instanceof Object){
-		msg = {data: msg}
-	} else if(code == 502) {
-		if(checkFriendly(msg.message)){
+	if (checkFriendly(msg)) {
+		msg = {
+			friendlyMessage: i18n.__(msg, args)
+		}
+	} else if (msg && msg instanceof Object) {
+		msg = {
+			data: msg
+		}
+	} else if (code == 502) {
+		if (checkFriendly(msg.message)) {
 			msg.friendlyMessage = i18n.__(msg.message, args)
 			delete msg.message
 		} else {
 			msg.message = i18n.__(msg.message, args)
 		}
 	} else {
-		msg = {message: i18n.__(msg, args)}
+		msg = {
+			message: i18n.__(msg, args)
+		}
 	}
 
-	if(code >= 400) {
-		if(!msg) {
+	if (code >= 400) {
+		if (!msg) {
 			msg = ''
 		}
-		msg = {code: code, error: msg}
+		msg = {
+			code: code,
+			error: msg
+		}
 	}
 
 	return res.json(msg);
 }
 
 function checkFriendly(msg) {
-	if(config && config.friendlyMessages){
+	if (config && config.friendlyMessages) {
 		return config.friendlyMessages.indexOf(msg) !== -1
 	}
 	return false
