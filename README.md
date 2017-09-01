@@ -1,6 +1,6 @@
 ## Help me respond
 
-This is a simple response helper which should make you life a bit easier. It supports localization and friendly messages for users. 
+This is a simple response helper which should make you life a bit easier. It supports localization and friendly messages for users.
 Help-me-respond preconfigures HTTP responses for you by setting up the status code, processing the message and setting headers. You only need to call one of the API functions and pass the message in a form of a string or an object to it.
 
 ## Prerequisites for usage
@@ -8,13 +8,13 @@ Your project is a nodejs server based on Express or something similar. Help-me-r
 
 ## Setup
 
-* Install with
+### Install with
 
 ```
 npm i help-me-respond --save
 ```
 
-* Setup config
+### Config setup
 
 Create a config folder and put **default.json** in it. (more cool config setup at https://github.com/lorenwest/node-config).
 
@@ -50,6 +50,12 @@ Some messages returned from the server are too technical for the user. So we wou
 
 
 Once the message name is in the above array, the response will have a key **friendlyMessage** which makes it easy for front-end to differentiate between messages.
+
+## Configuration
+
+### Turn off data prefix
+When you server returns any data, a prefix **data** is added to response. You can turn it off by setting **prefixNone** to **true** in your config file. For more info about config see [Config setup](#config-setup) above.
+
 
 ## API
 

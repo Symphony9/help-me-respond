@@ -99,8 +99,10 @@ function rCode(code, res, msg, headers) {
 			friendlyMessage: i18n.__(msg, args)
 		}
 	} else if (msg && msg instanceof Object) {
-		msg = {
-			data: msg
+		if (config && !config.prefixNone) {
+			msg = {
+				data: msg
+			}
 		}
 	} else if (code == 502) {
 		if (checkFriendly(msg.message)) {
@@ -117,7 +119,7 @@ function rCode(code, res, msg, headers) {
 
 	if (code >= 400) {
 		if (!msg) {
-			msg = ''
+			msg = {};
 		}
 		msg = {
 			code: code,
@@ -125,7 +127,11 @@ function rCode(code, res, msg, headers) {
 		}
 	}
 
-	return res.json(msg);
+	if (msg.message == '') {
+		return res.send();
+	} else {
+		return res.json(msg);
+	}
 }
 
 function checkFriendly(msg) {
