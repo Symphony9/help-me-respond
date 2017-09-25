@@ -1,39 +1,39 @@
-var config = require("config")
-var tools = require('./tools')
-var i18n = require('i18n-nodejs')(config.lang, config.langFile);
-var messages = require('./messages')
+const CONFIG = require("config")
+const TOOLS = require('./tools')
+const I18N = require('i18n-nodejs')(CONFIG.lang, CONFIG.langFile);
+const MESSAGES = require('./messages')
 
 function http400(res, msg, headers) {
 	if (!msg || msg == undefined) {
-		msg = messages.BAD_REQUEST;
+		msg = MESSAGES.BAD_REQUEST;
 	}
 	return rCode(400, res, msg, headers);
 }
 
 function http404(res, msg, headers) {
 	if (!msg || msg == undefined) {
-		msg = messages.NOT_FOUND;
+		msg = MESSAGES.NOT_FOUND;
 	}
 	return rCode(404, res, msg, headers);
 }
 
 function http403(res, msg, headers) {
 	if (!msg || msg == undefined) {
-		msg = messages.FORBIDDEN;
+		msg = MESSAGES.FORBIDDEN;
 	}
 	return rCode(403, res, msg, headers);
 }
 
 function http401(res, msg, headers) {
 	if (!msg || msg == undefined) {
-		msg = messages.UNAUTHENTICATED;
+		msg = MESSAGES.UNAUTHENTICATED;
 	}
 	return rCode(401, res, msg, headers);
 }
 
 function http502(res, resp, body) {
-	var code = 502;
-	var headers = '';
+	let code = 502;
+	let headers = '';
 	if (resp !== undefined && resp !== null) {
 		code = resp.statusCode;
 		headers = resp.headers;
@@ -68,20 +68,21 @@ function rCode(code, res, msg, headers) {
 	res = res.status(code);
 	// if user set some headers
 	if (headers && headers !== undefined) {
-		if (config.jsonHeader) {
+		if (!CONFIG.disableJsonHeader) {
 			headers['content-type'] = 'application/json';
 		}
 		res = res.header(headers);
 	} else {
-		let headers = {}
-		if (config.jsonHeader) {
+		if (!CONFIG.disableJsonHeader) {
+			let headers = {}
 			headers['content-type'] = 'application/json';
 			res = res.header(headers);
 		}
 	}
 
 	if (code >= 400 && msg instanceof Error) {
-		stack = msg.stack;
+		stack = msg.stack.split('\n');
+		stack.splice(0, 1);
 		msg = msg.message.toString();
 	}
 
@@ -89,8 +90,8 @@ function rCode(code, res, msg, headers) {
 		msg.message = msg.message.message.toString()
 	}
 
-	if (tools.isJsonString(msg)) {
-		var jsonObj = JSON.parse(msg)
+	if (TOOLS.isJsonString(msg)) {
+		let jsonObj = JSON.parse(msg)
 		if (jsonObj.msg) {
 			msg = jsonObj.msg
 		}
@@ -102,25 +103,25 @@ function rCode(code, res, msg, headers) {
 	// friendly messages for users
 	if (checkFriendly(msg)) {
 		msg = {
-			friendlyMessage: i18n.__(msg, args)
+			friendlyMessage: I18N.__(msg, args)
 		}
 	} else if (msg && msg instanceof Object) {
-		if (config && !config.prefixNone) {
+		if (CONFIG && !CONFIG.prefixNone) {
 			msg = {
 				data: msg
 			}
 		}
 	} else if (code == 502) {
 		if (checkFriendly(msg.message)) {
-			msg.friendlyMessage = i18n.__(msg.message, args)
+			msg.friendlyMessage = I18N.__(msg.message, args)
 			delete msg.message
 		} else {
-			msg.message = i18n.__(msg.message, args)
+			msg.message = I18N.__(msg.message, args)
 		}
 	} else {
 		msg = {
-			message: i18n.__(msg, args),
-			stack: stack.split('\n')
+			message: I18N.__(msg, args),
+			stack: stack
 		}
 	}
 
@@ -137,13 +138,13 @@ function rCode(code, res, msg, headers) {
 	if (msg.message == '') {
 		return res.send();
 	} else {
-		return res.json(msg);
+		return CONFIG.disableJsonHeader ? res.send(msg) : res.json(msg);
 	}
 }
 
 function checkFriendly(msg) {
-	if (config && config.friendlyMessages) {
-		return config.friendlyMessages.indexOf(msg) !== -1
+	if (CONFIG && CONFIG.friendlyMessages) {
+		return CONFIG.friendlyMessages.indexOf(msg) !== -1
 	}
 	return false
 }

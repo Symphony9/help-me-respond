@@ -62,7 +62,7 @@ You can turn it off by setting **prefixNone** to **true** in your config file. F
 
 ### Turn off default 'application/json' header
 
-Remove the default *application/json* header by setting **jsonHeader** to **false** in your config file. For more info about config see [Config setup](#config-setup) above.
+Remove the default *application/json* header by setting **disableJsonHeader** to **true** in your config file. For more info about config see [Config setup](#config-setup) above.
 
 ## API
 
