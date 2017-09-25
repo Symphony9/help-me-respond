@@ -23,7 +23,7 @@ You will need to add the following to your **default.json** file. File naming is
 
     {
     	"lang": "en",
-       	"langFile": "../../locales/locales.json"
+    	"langFile": "../../locales/locales.json"
     }
 
 * Create the specified above locales folder and locales file and add some messages there.
@@ -44,8 +44,7 @@ You will need to add the following to your **default.json** file. File naming is
 Some messages returned from the server are too technical for the user. So we would like to differentiate between those messages and user friendly messages. Simply add the following to your **default.json** configuration file. Now you can add message names in the friendlyMessages array.
 
     {
-    	"friendlyMessages": [
-    	]
+    	"friendlyMessages": []
     }
 
 
@@ -54,8 +53,14 @@ Once the message name is in the above array, the response will have a key **frie
 ## Configuration
 
 ### Turn off data prefix
-When you server returns any data, a prefix **data** is added to response. You can turn it off by setting **prefixNone** to **true** in your config file. For more info about config see [Config setup](#config-setup) above.
+When you server returns any data, a prefix **data** is added to response.
 
+You can turn it off by setting **prefixNone** to **true** in your config file. For more info about config see [Config setup](#config-setup) above.
+
+
+### Turn off default 'application/json' header
+
+Remove the default *application/json* header by setting **jsonHeader** to **false** in your config file. For more info about config see [Config setup](#config-setup) above.
 
 ## API
 

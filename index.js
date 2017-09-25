@@ -65,18 +65,22 @@ function rCode(code, res, msg, headers) {
 	msg = msg ? msg : '';
 
 	res = res.status(code);
+	// if user set some headers
 	if (headers && headers !== undefined) {
-		headers['content-type'] = 'application/json';
+		if (config.jsonHeader) {
+			headers['content-type'] = 'application/json';
+		}
 		res = res.header(headers);
 	} else {
-		var headers = {
-			'content-type': 'application/json'
-		};
-		res = res.header(headers);
+		var headers = {}
+		if (config.jsonHeader) {
+			headers['content-type'] = 'application/json';
+			res = res.header(headers);
+		}
 	}
 
 	if (code >= 400 && msg instanceof Error) {
-		msg = msg.message.toString()
+		msg = msg.message.toString();
 	}
 
 	if (code == 502 && msg.message && msg.statusCode && msg.message instanceof Error) {
