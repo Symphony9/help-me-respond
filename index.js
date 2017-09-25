@@ -57,7 +57,8 @@ function http201(res, msg, headers) {
 }
 
 function rCode(code, res, msg, headers) {
-	var args = null
+	let args = null
+	let stack = null;
 
 	// if there is no code in the message, its probably error
 	code = code ? code : 400;
@@ -72,7 +73,7 @@ function rCode(code, res, msg, headers) {
 		}
 		res = res.header(headers);
 	} else {
-		var headers = {}
+		let headers = {}
 		if (config.jsonHeader) {
 			headers['content-type'] = 'application/json';
 			res = res.header(headers);
@@ -80,6 +81,7 @@ function rCode(code, res, msg, headers) {
 	}
 
 	if (code >= 400 && msg instanceof Error) {
+		stack = msg.stack;
 		msg = msg.message.toString();
 	}
 
@@ -117,7 +119,8 @@ function rCode(code, res, msg, headers) {
 		}
 	} else {
 		msg = {
-			message: i18n.__(msg, args)
+			message: i18n.__(msg, args),
+			stack: stack.split('\n')
 		}
 	}
 

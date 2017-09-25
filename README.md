@@ -23,8 +23,10 @@ You will need to add the following to your **default.json** file. File naming is
 
     {
     	"lang": "en",
-    	"langFile": "../../locales/locales.json"
+    	"langFile": "../../config/locales.json"
     }
+
+*langFile* path is used in the library therefore, the path is relative to the *index.js* file from *help-me-respond* folder
 
 * Create the specified above locales folder and locales file and add some messages there.
 
