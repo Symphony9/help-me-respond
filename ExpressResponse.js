@@ -21,9 +21,9 @@ class ExpressResponse {
 	/**
 	 * Sends a JSON response. This method sends a response (with the correct content-type) that is the parameter converted to a JSON string using JSON.stringify().
 	 */
-	json() {
+	json(msg) {
 		this.msg = JSON.stringify(msg);
-		this.headers['Content-type'] = 'application/json';
+		this.headers['content-type'] = 'application/json';
 	}
 
 	/**

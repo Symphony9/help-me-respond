@@ -28,7 +28,6 @@
 	},
 	"license": "ISC",
 	"dependencies": {
-		"config": "^1.25.1",
 		"i18n-nodejs": "^2.0.0",
 		"mocha": "^4.1.0"
 	}

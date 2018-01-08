@@ -1,16 +1,36 @@
-const CONFIG = require("config")
-const TOOLS = require('./tools')
-const I18N = require('i18n-nodejs')(CONFIG.lang, CONFIG.langFile);
-const MESSAGES = require('./messages')
+let CONFIG = {};
+let USER_DEFINED_MESSAGES = {};
+let I18N = null;
+
+try {
+	CONFIG = require("../../config/default");
+} catch (e) {
+	CONFIG = require('./_default');
+}
+
+try {
+	USER_DEFINED_MESSAGES = require('../../config/messages');
+} catch (e) {
+	USER_DEFINED_MESSAGES = require('./_messages');
+}
+
+if (CONFIG && CONFIG.lang && CONFIG.langFile) {
+	I18N = require('i18n-nodejs')(CONFIG.lang, CONFIG.langFile);
+}
+
+const TOOLS = require('./tools');
+const MESSAGES = require('./messages');
 
 function checkMessage(msg, code) {
 	if (!msg) {
+
 		switch (code) {
 		case 400:
 			msg = MESSAGES.BAD_REQUEST;
 			break;
 		case 401:
 			msg = MESSAGES.UNAUTHORIZED;
+			console.log(msg)
 			break;
 		case 403:
 			msg = MESSAGES.FORBIDDEN;
@@ -20,25 +40,26 @@ function checkMessage(msg, code) {
 			break;
 		}
 	}
+	return msg;
 }
 
 function http400(res, msg, headers) {
-	checkMessage(msg, code);
+	msg = checkMessage(msg, 400);
 	return rCode(400, res, msg, headers);
 }
 
 function http404(res, msg, headers) {
-	checkMessage(msg, code);
+	msg = checkMessage(msg, 404);
 	return rCode(404, res, msg, headers);
 }
 
 function http403(res, msg, headers) {
-	checkMessage(msg, code);
+	msg = checkMessage(msg, 403);
 	return rCode(403, res, msg, headers);
 }
 
 function http401(res, msg, headers) {
-	checkMessage(msg, code);
+	msg = checkMessage(msg, 401);
 	return rCode(401, res, msg, headers);
 }
 
@@ -88,18 +109,17 @@ function rCode(code, res, msg, headers) {
 
 	// if user set some headers
 	if (headers && headers !== undefined) {
-		if (!CONFIG.disableJsonHeader) {
+		if (CONFIG && !CONFIG.disableJsonHeader) {
 			headers['content-type'] = 'application/json';
 		}
 		res.header(headers);
 	} else {
-		if (!CONFIG.disableJsonHeader) {
+		if (CONFIG && !CONFIG.disableJsonHeader) {
 			let headers = {}
 			headers['content-type'] = 'application/json';
 			res.header(headers);
 		}
 	}
-
 	if (code >= 400 && msg instanceof Error) {
 		stack = msg.stack.split('\n');
 		stack.splice(0, 1);
@@ -122,8 +142,9 @@ function rCode(code, res, msg, headers) {
 
 	// friendly messages for users
 	if (checkFriendly(msg)) {
+		console.log(getMessage(msg, args))
 		msg = {
-			friendlyMessage: I18N.__(msg, args)
+			friendlyMessage: getMessage(msg, args)
 		}
 	} else if (msg && msg instanceof Object) {
 		if (CONFIG && !CONFIG.prefixNone) {
@@ -133,14 +154,14 @@ function rCode(code, res, msg, headers) {
 		}
 	} else if (code == 502) {
 		if (checkFriendly(msg.message)) {
-			msg.friendlyMessage = I18N.__(msg.message, args)
+			msg.friendlyMessage = getMessage(msg.message, args)
 			delete msg.message
 		} else {
-			msg.message = I18N.__(msg.message, args)
+			msg.message = getMessage(msg.message, args)
 		}
 	} else {
 		msg = {
-			message: I18N.__(msg, args),
+			message: getMessage(msg, args),
 			stack: stack
 		}
 	}
@@ -150,15 +171,30 @@ function rCode(code, res, msg, headers) {
 			msg = {};
 		}
 		msg = {
-			code: code,
-			error: msg
+			error: msg,
 		}
 	}
-
 	if (msg.message == '') {
 		return res.send();
 	} else {
-		return CONFIG.disableJsonHeader ? res.send(msg) : res.json(msg);
+		return (CONFIG && CONFIG.disableJsonHeader) ? res.send(msg) : res.json(msg);
+	}
+}
+
+/**
+ * Does on of
+ * 1. uses localization lib to translate the messages
+ * 2. finds the message in user defined messages file
+ * 3. returns messages as it is
+ */
+function getMessage(msg, args) {
+	if (I18N) {
+		return I18N.__(msg, args)
+	} else {
+		if (USER_DEFINED_MESSAGES[msg]) {
+			return USER_DEFINED_MESSAGES[msg];
+		}
+		return msg;
 	}
 }
 
