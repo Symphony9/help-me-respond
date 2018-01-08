@@ -3,38 +3,65 @@ const TOOLS = require('./tools')
 const I18N = require('i18n-nodejs')(CONFIG.lang, CONFIG.langFile);
 const MESSAGES = require('./messages')
 
-function http400(res, msg, headers) {
-	if (!msg || msg == undefined) {
-		msg = MESSAGES.BAD_REQUEST;
+function checkMessage(msg, code) {
+	if (!msg) {
+		switch (code) {
+		case 400:
+			msg = MESSAGES.BAD_REQUEST;
+			break;
+		case 401:
+			msg = MESSAGES.UNAUTHORIZED;
+			break;
+		case 403:
+			msg = MESSAGES.FORBIDDEN;
+			break;
+		case 404:
+			msg = MESSAGES.NOT_FOUND;
+			break;
+		}
 	}
+}
+
+function http400(res, msg, headers) {
+	checkMessage(msg, code);
 	return rCode(400, res, msg, headers);
 }
 
 function http404(res, msg, headers) {
-	if (!msg || msg == undefined) {
-		msg = MESSAGES.NOT_FOUND;
-	}
+	checkMessage(msg, code);
 	return rCode(404, res, msg, headers);
 }
 
 function http403(res, msg, headers) {
-	if (!msg || msg == undefined) {
-		msg = MESSAGES.FORBIDDEN;
-	}
+	checkMessage(msg, code);
 	return rCode(403, res, msg, headers);
 }
 
 function http401(res, msg, headers) {
-	if (!msg || msg == undefined) {
-		msg = MESSAGES.UNAUTHENTICATED;
-	}
+	checkMessage(msg, code);
 	return rCode(401, res, msg, headers);
+}
+
+function httpSuccess(res, msg, headers) {
+	return rCode(200, res, msg, headers);
+}
+
+function http200(res, msg, headers) {
+	return rCode(200, res, msg, headers);
+}
+
+function http201(res, msg, headers) {
+	return rCode(201, res, msg, headers);
+}
+
+function http204(res, msg, headers) {
+	return rCode(204, res, msg, headers);
 }
 
 function http502(res, resp, body) {
 	let code = 502;
 	let headers = '';
-	if (resp !== undefined && resp !== null) {
+	if (resp) {
 		code = resp.statusCode;
 		headers = resp.headers;
 	}
@@ -46,14 +73,6 @@ function http502(res, resp, body) {
 		},
 		headers
 	);
-}
-
-function httpSuccess(res, msg, headers) {
-	return rCode(200, res, msg, headers);
-}
-
-function http201(res, msg, headers) {
-	return rCode(201, res, msg, headers);
 }
 
 function rCode(code, res, msg, headers) {
@@ -146,7 +165,7 @@ function checkFriendly(msg) {
 	if (CONFIG && CONFIG.friendlyMessages) {
 		return CONFIG.friendlyMessages.indexOf(msg) !== -1
 	}
-	return false
+	return false;
 }
 
 module.exports = {
