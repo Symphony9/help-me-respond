@@ -84,18 +84,19 @@ function rCode(code, res, msg, headers) {
 	// empty message is ok
 	msg = msg ? msg : '';
 
-	res = res.status(code);
+	res.status(code);
+
 	// if user set some headers
 	if (headers && headers !== undefined) {
 		if (!CONFIG.disableJsonHeader) {
 			headers['content-type'] = 'application/json';
 		}
-		res = res.header(headers);
+		res.header(headers);
 	} else {
 		if (!CONFIG.disableJsonHeader) {
 			let headers = {}
 			headers['content-type'] = 'application/json';
-			res = res.header(headers);
+			res.header(headers);
 		}
 	}
 
@@ -174,6 +175,9 @@ module.exports = {
 	http403,
 	http401,
 	http502,
+	http200,
+	http201,
+	http204,
 	httpSuccess,
 	rCode
 }
