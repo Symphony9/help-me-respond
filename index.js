@@ -30,7 +30,6 @@ function checkMessage(msg, code) {
 			break;
 		case 401:
 			msg = MESSAGES.UNAUTHORIZED;
-			console.log(msg)
 			break;
 		case 403:
 			msg = MESSAGES.FORBIDDEN;
@@ -142,7 +141,6 @@ function rCode(code, res, msg, headers) {
 
 	// friendly messages for users
 	if (checkFriendly(msg)) {
-		console.log(getMessage(msg, args))
 		msg = {
 			friendlyMessage: getMessage(msg, args)
 		}

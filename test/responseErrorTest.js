@@ -2,6 +2,8 @@ var assert = require('assert');
 const HELP_ME_RESPOND = require('../index.js');
 const ExpressResponse = require('../ExpressResponse');
 const MESSAGES = require('../messages');
+const FS = require('fs');
+
 // simulating Express Response object
 const RES = new ExpressResponse();
 const DEFAULT_HEADERS = {
@@ -81,6 +83,24 @@ describe('Correct error response codes and messages', function () {
 				assert.notEqual(err.error.stack, null);
 				assert.equal(Array.isArray(err.error.stack), true);
 			})
+	});
+
+	it('400 - friendly messages', function () {
+
+		FS.writeFileSync(__dirname + '/../' + '_default.json', JSON.stringify({
+			friendlyMessages: ["TEST_ERR"]
+		}), 'utf8');
+
+		FS.writeFileSync(__dirname + '/../' + '_messages.json', JSON.stringify({
+			"TEST_ERR": "error one"
+		}), 'utf8');
+		const messages = require('../_messages.json');
+		HELP_ME_RESPOND.http400(RES, 'TEST_ERR');
+		assert.equal(RES.code, 400);
+		assert.deepEqual(RES.headers, DEFAULT_HEADERS);
+
+		let m = JSON.parse(RES.msg);
+		assert.equal(m.stack, undefined);
 	});
 
 	it('401', function () {

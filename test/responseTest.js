@@ -24,7 +24,6 @@ describe('Correct successful response codes and messages', function () {
 		assert.deepEqual(RES.headers, DEFAULT_HEADERS);
 
 		let m = JSON.parse(RES.msg);
-		console.log(m)
 		assert.equal(m.message, SUCCESS_MESSAGE);
 		assert.equal(m.stack, undefined);
 	});
@@ -43,7 +42,6 @@ describe('Correct successful response codes and messages', function () {
 		HELP_ME_RESPOND.http200(RES, 'TEST');
 		assert.equal(RES.code, 200);
 		assert.deepEqual(RES.headers, DEFAULT_HEADERS);
-		console.log(RES);
 
 		let m = JSON.parse(RES.msg);
 		assert.notEqual(m.friendlyMessage, null);
