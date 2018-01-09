@@ -78,57 +78,24 @@ function http204(res, msg, headers) {
 	return rCode(204, res, msg, headers);
 }
 
-function http502(res, resp, body) {
-	let code = 502;
-	let headers = '';
-	if (resp) {
-		code = resp.statusCode;
-		headers = resp.headers;
-	}
-	return rCode(
-		502,
-		res, {
-			statusCode: code,
-			message: body
-		},
-		headers
-	);
-}
-
 function rCode(code, res, msg, headers) {
 	let args = null
 	let stack = null;
 
 	// if there is no code in the message, its probably error
 	code = code ? code : 400;
-	// empty message is ok
 	msg = msg ? msg : '';
-
 	res.status(code);
 
-	// if user set some headers
-	if (headers && headers !== undefined) {
-		if (CONFIG && !CONFIG.disableJsonHeader) {
-			headers['content-type'] = 'application/json';
-		}
-		res.header(headers);
-	} else {
-		if (CONFIG && !CONFIG.disableJsonHeader) {
-			let headers = {}
-			headers['content-type'] = 'application/json';
-			res.header(headers);
-		}
-	}
+	setHeaders(headers, res);
+
+	//// RETRIEVE THE MESSAGE FROM ERR OBJECT
 	if (code >= 400 && msg instanceof Error) {
-		stack = msg.stack.split('\n');
-		stack.splice(0, 1);
+		stack = msg.stack.split('\n').splice(0, 1);
 		msg = msg.message.toString();
 	}
 
-	if (code == 502 && msg.message && msg.statusCode && msg.message instanceof Error) {
-		msg.message = msg.message.message.toString()
-	}
-
+	// DECODE JSON STRING -> placeholders for localizaiton only
 	if (TOOLS.isJsonString(msg)) {
 		let jsonObj = JSON.parse(msg)
 		if (jsonObj.msg) {
@@ -139,23 +106,17 @@ function rCode(code, res, msg, headers) {
 		}
 	}
 
-	// friendly messages for users
+	// USER friendly message
 	if (checkFriendly(msg)) {
 		msg = {
 			friendlyMessage: getMessage(msg, args)
 		}
 	} else if (msg && msg instanceof Object) {
+		// DATA message
 		if (CONFIG && !CONFIG.prefixNone) {
 			msg = {
 				data: msg
 			}
-		}
-	} else if (code == 502) {
-		if (checkFriendly(msg.message)) {
-			msg.friendlyMessage = getMessage(msg.message, args)
-			delete msg.message
-		} else {
-			msg.message = getMessage(msg.message, args)
 		}
 	} else {
 		msg = {
@@ -165,9 +126,6 @@ function rCode(code, res, msg, headers) {
 	}
 
 	if (code >= 400) {
-		if (!msg) {
-			msg = {};
-		}
 		msg = {
 			error: msg,
 		}
@@ -203,12 +161,19 @@ function checkFriendly(msg) {
 	return false;
 }
 
+function setHeaders(headers, res) {
+	headers = headers ? headers : {};
+	if (CONFIG && !CONFIG.disableJsonHeader) {
+		headers['content-type'] = 'application/json';
+	}
+	res.header(headers);
+}
+
 module.exports = {
 	http400,
 	http404,
 	http403,
 	http401,
-	http502,
 	http200,
 	http201,
 	http204,

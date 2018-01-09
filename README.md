@@ -13,7 +13,11 @@ The library is easier to configure. No need to configure anything :) Just start 
 
 Localization became optional.
 
-**BREAKING CHANGES**: Removed *code* key from the error response message object. If u were using this, please use the code in the Express HTTP Response object.
+**BREAKING CHANGES**:
+
+Removed *code* key from the error response message object. If u were using this, please use the code in the Express HTTP Response object.
+
+Removed `http502`.
 
 
 ## Prerequisites for usage
@@ -88,7 +92,9 @@ You will need to add the following to your **config/default.json** file. This is
 
 ### Pass arguments to your messages
 
-**config/messages.json**
+This works only if you are using localization.
+
+**config/locales.json**
 
     {
       "welcome": "Welcome dear {{name}}",
@@ -96,11 +102,12 @@ You will need to add the following to your **config/default.json** file. This is
 
 **somewhere in the code**
 
-``http200(res, {
-    msg: "welcome",
-    args: {name: Mike}
-  }
-)``
+    http200(res, JSON.stringify({
+      msg: 'welcome',
+      args: {
+        name: 'Mike'
+      }
+    }));
 
 ### Turn off data prefix
 When you server returns any data, a prefix **data** is added to response.
@@ -140,14 +147,6 @@ If no message is specified will return message - FORBIDDEN
 #### http401(res, msg, headers)
 returns HTTP response with 403 error code
 If no message is specified will return message - UNAUTHENTICATED
-
-
-#### http502(res, response, headers)
-response - an Express response object
-returns HTTP response with 502 error code
-
-This can be used when you are quering third party API. E.g. You will receive an error reponse for you request. You can call this function with the original response object. This way you will differentiate between you own server errors and third party API problems
-
 
 #### http200(res, msg, headers)
 returns HTTP response with 201 success code
@@ -200,6 +199,18 @@ general function to return any HTTP code you want
       'at Context.<anonymous> (/Users/Dasha/Projects/help-me-respond/test/responseErrorTest.js:72:3)',
       'at callFn (/usr/local/Cellar/node/0.12.7/libexec/npm/lib/node_modules/mocha/lib/runnable.js:334:21)'
     ]    
+  }
+}
+```
+
+### Data response
+
+
+```
+{
+  "data": {
+    "item1": "name",
+    "item2": "name"
   }
 }
 ```

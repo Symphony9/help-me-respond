@@ -87,19 +87,13 @@ describe('Correct error response codes and messages', function () {
 
 	it('400 - friendly messages', function () {
 
-		FS.writeFileSync(__dirname + '/../' + '_default.json', JSON.stringify({
-			friendlyMessages: ["TEST_ERR"]
-		}), 'utf8');
-
-		FS.writeFileSync(__dirname + '/../' + '_messages.json', JSON.stringify({
-			"TEST_ERR": "error one"
-		}), 'utf8');
 		const messages = require('../_messages.json');
 		HELP_ME_RESPOND.http400(RES, 'TEST_ERR');
 		assert.equal(RES.code, 400);
 		assert.deepEqual(RES.headers, DEFAULT_HEADERS);
 
 		let m = JSON.parse(RES.msg);
+		assert.notEqual(m.error.friendlyMessage, null);
 		assert.equal(m.stack, undefined);
 	});
 
