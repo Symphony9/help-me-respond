@@ -1,7 +1,7 @@
 ## Help me respond
 
-This is a simple response helper which should make you life a bit easier. It supports localization and friendly messages for users.
-Help-me-respond pre-configures HTTP responses for you by setting the status code, processing the message and setting headers. You only need to call one of the API functions and pass the message in a form of a string or an object to it.
+This is a simple response helper which should make your life a bit easier. It supports localization and friendly messages for users.
+Help-me-respond preconfigures HTTP responses for you by setting the status code, processing the message and setting headers. You only need to call one of the API functions and pass the message in a form of a string or an object to it.
 
 ## UPDATES
 
@@ -29,7 +29,7 @@ Your project is a nodejs server based on Express or something similar. Help-me-r
 
 ```
 npm i help-me-respond --save
-```
+````
 
 *OPTIONAL*: Create *config/messages.json* file. We don't want our messages to be hardcoded in the code, so we will keep them in a separate file.
 
@@ -46,7 +46,7 @@ All the configurations are put in **config/** folder in the root of your project
 
 ### User friendly messages
 
-Some messages returned from the server are too technical for the user. So we would like to differentiate between those messages and user friendly messages. Simply add the following to your **default.json** configuration file. Now you can add message names in the friendlyMessages array. See example below.
+Some messages returned from the server are too technical for  users. So we would like to differentiate between those messages and user friendly messages. See example below. You can use it for messages in *messages.json* or *locales.json*
 
 **config/messages.json**
 
