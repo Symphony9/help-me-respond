@@ -88,10 +88,10 @@ function rCode(code, res, msg, headers) {
 	res.status(code);
 
 	setHeaders(headers, res);
-
 	//// RETRIEVE THE MESSAGE FROM ERR OBJECT
 	if (code >= 400 && msg instanceof Error) {
-		stack = msg.stack.split('\n').splice(0, 1);
+		stack = msg.stack.split('\n');
+		stack.splice(0, 1)
 		msg = msg.message.toString();
 	}
 
@@ -144,14 +144,18 @@ function rCode(code, res, msg, headers) {
  * 3. returns messages as it is
  */
 function getMessage(msg, args) {
+	let result = null;
 	if (I18N) {
-		return I18N.__(msg, args)
-	} else {
-		if (USER_DEFINED_MESSAGES[msg]) {
-			return USER_DEFINED_MESSAGES[msg];
-		}
-		return msg;
+		result = I18N.__(msg, args);
 	}
+	// we found translation for this msg in locales file
+	if (result !== msg) {
+		return result;
+	}
+	if (USER_DEFINED_MESSAGES[msg]) {
+		return USER_DEFINED_MESSAGES[msg];
+	}
+	return msg;
 }
 
 function checkFriendly(msg) {
