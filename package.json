@@ -1,6 +1,6 @@
 {
 	"name": "help-me-respond",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Simple nodejs Express http response helper",
 	"main": "index.js",
 	"scripts": {
