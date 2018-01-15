@@ -21,7 +21,6 @@ try {
 		console.warn('WARNING Help me respond: You are missing messages.json file in your config folder or it is missing json inside.')
 	}
 }
-
 if (CONFIG && CONFIG.lang && CONFIG.langFile) {
 	I18N = require('i18n-nodejs')(CONFIG.lang, CONFIG.langFile);
 }
@@ -159,7 +158,7 @@ function getMessage(msg, args) {
 		result = I18N.__(msg, args);
 	}
 	// we found translation for this msg in locales file
-	if (result !== msg) {
+	if (result && result !== msg) {
 		return result;
 	}
 	if (USER_DEFINED_MESSAGES[msg]) {
