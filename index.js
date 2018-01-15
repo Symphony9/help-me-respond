@@ -5,13 +5,21 @@ let I18N = null;
 try {
 	CONFIG = require("../../config/default");
 } catch (e) {
-	CONFIG = require('./_default');
+	try {
+		CONFIG = require('./_default');
+	} catch (e) {
+		console.error('ERROR Help me respond: You are missing default.json file in your config folder or it is missing json inside.')
+	}
 }
 
 try {
-	USER_DEFINED_MESSAGES = require('../../config/messages');
+	USER_DEFINED_MESSAGES = require("../../config/messages");
 } catch (e) {
-	USER_DEFINED_MESSAGES = require('./_messages');
+	try {
+		USER_DEFINED_MESSAGES = require('./_messages');
+	} catch (e) {
+		console.warn('WARNING Help me respond: You are missing messages.json file in your config folder or it is missing json inside.')
+	}
 }
 
 if (CONFIG && CONFIG.lang && CONFIG.langFile) {
@@ -120,14 +128,16 @@ function rCode(code, res, msg, headers) {
 		}
 	} else {
 		msg = {
-			message: getMessage(msg, args),
-			stack: stack
+			message: getMessage(msg, args)
 		}
 	}
 
 	if (code >= 400) {
 		msg = {
-			error: msg,
+			error: {
+				message: msg.message,
+				stack: stack
+			}
 		}
 	}
 	if (msg.message == '') {
