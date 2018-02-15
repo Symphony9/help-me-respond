@@ -1,5 +1,15 @@
 ## Help me respond
 
+Hello there :)
+
+Thank you for your interest in *help-me-respond*!
+
+Any feedback is highly appreciated. In case you run into problems please feel free to create an issue for me at [https://github.com/Symphony9/help-me-respond/issues](https://github.com/Symphony9/help-me-respond/issues)
+
+Have fun coding using this little lib <3
+
+## About
+
 This is a simple response helper which should make your life a bit easier. It supports localization and friendly messages for users.
 Help-me-respond preconfigures HTTP responses for you by setting the status code, processing the message and setting headers. You only need to call one of the API functions and pass the message in a form of a string or an object to it.
 
@@ -9,11 +19,12 @@ Help-me-respond preconfigures HTTP responses for you by setting the status code,
 
 The library became lighter! :) I removed config library dependency in order to minimize dependencies, however you can still use it since the config folder structure I am following here is the same as for the [node-config](https://github.com/lorenwest/node-config);
 
-The library is easier to configure. No need to configure anything :) Just start using it!
+The library is **easier to configure**. No need to configure anything :) Just start using it!
 
-Localization became optional.
+**Localization** became optional.
 
-**BREAKING CHANGES**:
+
+### BREAKING CHANGES:
 
 Removed *code* key from the error response message object. If u were using this, please use the code in the Express HTTP Response object.
 
@@ -190,7 +201,6 @@ general function to return any HTTP code you want
 
 ```
 {
-  "code": 400,
   "error": {
     "message": "I am a very technical error message that users do not want to see",
     "stack": [
