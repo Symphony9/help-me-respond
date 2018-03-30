@@ -142,6 +142,13 @@ function rCode(code, res, msg, headers) {
 	if (msg.message == '') {
 		return res.send();
 	} else {
+		if (CONFIG.logging) {
+			if(msg.error) {
+				console.error(msg);
+			} else {
+				console.log(msg);
+			}
+		}
 		return (CONFIG && CONFIG.disableJsonHeader) ? res.send(msg) : res.json(msg);
 	}
 }

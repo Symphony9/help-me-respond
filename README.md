@@ -55,6 +55,16 @@ npm i help-me-respond --save
 
 All the configurations are put in **config/** folder in the root of your project.
 
+### Logging
+
+**config/default.json**
+
+    {
+    	"logging": true
+    }
+
+`False` by default.
+
 ### User friendly messages
 
 Some messages returned from the server are too technical for  users. So we would like to differentiate between those messages and user friendly messages. See example below. You can use it for messages in *messages.json* or *locales.json*
