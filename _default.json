@@ -1,0 +1,8 @@
+{
+	"friendlyMessages": ["TEST", "TEST_ERR"],
+	"lang": "en",
+	"langFile": "../../_locales.json",
+	"logging": false,
+	"prefixNone": false,
+	"disableJsonHeader": false
+}
