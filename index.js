@@ -6,7 +6,11 @@ try {
 	CONFIG = require("../../config/default");
 } catch (e) {
 	try {
-		CONFIG = require('./_default');
+		if(process.env.NODE_ENV == 'test') {
+			CONFIG = require('./_default');
+		} else {
+			CONFIG = require('./default');
+		}
 	} catch (e) {
 		console.error('ERROR Help me respond: You are missing default.json file in your config folder or it is missing json inside.')
 	}
