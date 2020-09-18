@@ -1,3 +1,7 @@
+The library has moved to https://github.com/piggydoughnut/help-me-respond
+
+This repository is not supported or updated anymore.
+
 ## Help me respond
 
 Hello there :)
